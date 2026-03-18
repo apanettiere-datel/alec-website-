@@ -42,16 +42,16 @@ const ameriLifeStats = [
   '52 insurance agency locations',
 ]
 
-function Section({ id, title, children }) {
+function Section({ id, title, children, className = '' }) {
   return (
     <section
       id={id}
-      className="scroll-mt-28 space-y-4 border-t border-zinc-200 pt-8 first:border-none first:pt-0 dark:border-zinc-700/40"
+      className={`min-w-0 scroll-mt-28 space-y-4 border-t border-zinc-200 pt-8 first:border-none first:pt-0 dark:border-zinc-700/40 ${className}`}
     >
       <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
         {title}
       </h2>
-      <div className="space-y-4 text-base leading-7 text-zinc-700 dark:text-zinc-300">
+      <div className="min-w-0 space-y-4 text-base leading-7 text-zinc-700 dark:text-zinc-300">
         {children}
       </div>
     </section>
@@ -79,10 +79,10 @@ export default function Home() {
         async
         defer
       />
-      <div className="mx-auto max-w-6xl space-y-10">
-        <article className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-700/40 dark:bg-zinc-900/80">
+      <div className="mx-auto max-w-6xl min-w-0 space-y-10">
+        <article className="min-w-0 overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-700/40 dark:bg-zinc-900/80">
           <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="p-7 sm:p-10">
+            <div className="min-w-0 p-5 sm:p-10">
               <p className="inline-flex rounded-full bg-[#3fa590]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#3fa590]">
                 AmeriLife Financial Services
               </p>
@@ -97,7 +97,7 @@ export default function Home() {
               </p>
 
               <div className="mt-7 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/60">
+                <div className="min-w-0 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800/60 sm:p-4">
                   <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     Category
                   </p>
@@ -105,7 +105,7 @@ export default function Home() {
                     Financial Services
                   </p>
                 </div>
-                <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/60">
+                <div className="min-w-0 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800/60 sm:p-4">
                   <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     Partner
                   </p>
@@ -113,7 +113,7 @@ export default function Home() {
                     AmeriLife
                   </p>
                 </div>
-                <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/60">
+                <div className="min-w-0 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800/60 sm:p-4">
                   <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     Focus
                   </p>
@@ -152,41 +152,41 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-t border-zinc-200 p-7 sm:p-10 dark:border-zinc-700/40">
-            <nav className="mb-9 flex flex-wrap gap-2 text-sm">
+          <div className="min-w-0 border-t border-zinc-200 p-2 sm:p-10 dark:border-zinc-700/40">
+            <nav className="mb-9 flex flex-wrap gap-2 text-xs sm:text-sm">
               <Link
                 href="#profile"
-                className="rounded-full border border-zinc-300 px-4 py-2 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590]"
+                className="rounded-full border border-zinc-300 px-3 py-1.5 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590] sm:px-4 sm:py-2"
               >
                 Profile
               </Link>
               <Link
                 href="#services"
-                className="rounded-full border border-zinc-300 px-4 py-2 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590]"
+                className="rounded-full border border-zinc-300 px-3 py-1.5 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590] sm:px-4 sm:py-2"
               >
                 Services
               </Link>
               <Link
                 href="#financial-planning"
-                className="rounded-full border border-zinc-300 px-4 py-2 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590]"
+                className="rounded-full border border-zinc-300 px-3 py-1.5 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590] sm:px-4 sm:py-2"
               >
                 Financial Planning
               </Link>
               <Link
                 href="#amerilife"
-                className="rounded-full border border-zinc-300 px-4 py-2 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590]"
+                className="rounded-full border border-zinc-300 px-3 py-1.5 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590] sm:px-4 sm:py-2"
               >
                 AmeriLife
               </Link>
               <Link
                 href="#contact"
-                className="rounded-full border border-zinc-300 px-4 py-2 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590]"
+                className="rounded-full border border-zinc-300 px-3 py-1.5 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590] sm:px-4 sm:py-2"
               >
                 Contact
               </Link>
             </nav>
 
-            <div className="space-y-10">
+            <div className="min-w-0 space-y-10">
               <Section id="profile" title="Profile">
                 <p>
                   Alec Roedig provides personalized guidance centered on insurance
@@ -211,7 +211,7 @@ export default function Home() {
                   {servicesOffered.map((service) => (
                     <li
                       key={service}
-                      className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-200"
+                      className="min-w-0 break-words rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-200 sm:px-4 sm:py-3"
                     >
                       {service}
                     </li>
@@ -240,7 +240,7 @@ export default function Home() {
                   {clientFocusAreas.map((area) => (
                     <div
                       key={area}
-                      className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-200"
+                      className="min-w-0 break-words rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-200 sm:px-4 sm:py-3"
                     >
                       {area}
                     </div>
@@ -282,7 +282,7 @@ export default function Home() {
                 <form
                   method="post"
                   action="/api/contact"
-                  className="grid gap-5 rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-700 dark:bg-zinc-800/60 sm:p-6"
+                  className="grid min-w-0 w-full max-w-full gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 px-2 py-3 dark:border-zinc-700 dark:bg-zinc-800/60 sm:gap-5 sm:px-6 sm:py-6"
                 >
                   <input
                     type="text"
@@ -308,12 +308,12 @@ export default function Home() {
                       name="contact-reference"
                       readOnly
                       value="Alec Roedig - AmeriLife"
-                      className="mt-2 block w-full rounded-md border border-zinc-300 bg-zinc-100 px-3 py-2 text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-700/60 dark:text-zinc-200"
+                      className="mt-2 block w-full min-w-0 max-w-full box-border rounded-md border border-zinc-300 bg-zinc-100 px-2.5 py-1.5 text-[16px] leading-5 text-zinc-700 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-inset focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-700/60 dark:text-zinc-200 sm:px-3 sm:py-2"
                     />
                   </div>
 
                   <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
+                    <div className="min-w-0">
                       <RequiredLabel htmlFor="name">Name</RequiredLabel>
                       <input
                         id="name"
@@ -321,11 +321,11 @@ export default function Home() {
                         type="text"
                         required
                         autoComplete="name"
-                        className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+                        className="mt-1 block w-full min-w-0 max-w-full box-border rounded-md border border-zinc-300 bg-white px-2.5 py-1.5 text-[16px] leading-5 text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-inset focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 sm:px-3 sm:py-2"
                       />
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                       <RequiredLabel htmlFor="email">Email</RequiredLabel>
                       <input
                         id="email"
@@ -333,12 +333,12 @@ export default function Home() {
                         type="email"
                         required
                         autoComplete="email"
-                        className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+                        className="mt-1 block w-full min-w-0 max-w-full box-border rounded-md border border-zinc-300 bg-white px-2.5 py-1.5 text-[16px] leading-5 text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-inset focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 sm:px-3 sm:py-2"
                       />
                     </div>
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <label
                       htmlFor="phone"
                       className="block text-sm font-medium text-zinc-800 dark:text-zinc-200"
@@ -350,28 +350,32 @@ export default function Home() {
                       name="phone"
                       type="tel"
                       autoComplete="tel"
-                      className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+                      className="mt-1 block w-full min-w-0 max-w-full box-border rounded-md border border-zinc-300 bg-white px-2.5 py-1.5 text-[16px] leading-5 text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-inset focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 sm:px-3 sm:py-2"
                     />
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <RequiredLabel htmlFor="message">Message</RequiredLabel>
                     <textarea
                       id="message"
                       name="message"
                       required
-                      rows={5}
-                      className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+                      rows={4}
+                      className="mt-1 block w-full min-w-0 max-w-full box-border rounded-md border border-zinc-300 bg-white px-2.5 py-1.5 text-[16px] leading-5 text-zinc-900 outline-none transition focus:border-[#3fa590] focus:ring-2 focus:ring-inset focus:ring-[#3fa590]/20 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 sm:px-3 sm:py-2"
                     />
                   </div>
 
                   <div>
                     {turnstileSiteKey ? (
-                      <div
-                        className="cf-turnstile"
-                        data-sitekey={turnstileSiteKey}
-                        data-theme="auto"
-                      />
+                      <div className="w-full max-w-full overflow-hidden rounded-md border border-zinc-200 bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900/60 sm:p-3">
+                        <div
+                          className="cf-turnstile w-full max-w-full"
+                          data-sitekey={turnstileSiteKey}
+                          data-theme="auto"
+                          data-size="flexible"
+                          style={{ minWidth: 0 }}
+                        />
+                      </div>
                     ) : (
                       <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700 dark:border-amber-400/40 dark:bg-amber-500/10 dark:text-amber-200">
                         Captcha site key is not configured yet.
@@ -381,7 +385,7 @@ export default function Home() {
 
                   <button
                     type="submit"
-                    className="inline-flex w-fit items-center rounded-md bg-[#3fa590] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#368f81]"
+                    className="inline-flex w-full items-center justify-center rounded-md bg-[#3fa590] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#368f81] sm:w-fit"
                   >
                     Send Message
                   </button>

@@ -26,7 +26,7 @@ Finally, open [http://localhost:3000](http://localhost:3000) in your browser to 
 
 ## Cloudflare Contact Form Setup
 
-The contact form posts to `/api/contact`, which is implemented as an Edge runtime route (`src/app/api/contact/route.js`) for Cloudflare-friendly deployment.
+The contact form posts to `/api/contact`, which is implemented in `src/app/api/contact/route.js` for Cloudflare-friendly deployment.
 
 Set these environment variables in Cloudflare Pages:
 
@@ -35,6 +35,10 @@ NEXT_PUBLIC_TURNSTILE_SITE_KEY=replace-with-turnstile-site-key
 TURNSTILE_SECRET_KEY=replace-with-turnstile-secret-key
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxx
 RESEND_FROM_EMAIL=Alec Roedig <contact@yourdomain.com>
+# Optional fallback sender (recommended for local/testing while domain is pending verification)
+RESEND_FALLBACK_FROM_EMAIL=Alec Roedig <onboarding@resend.dev>
+# In production, set to true only if you explicitly want fallback sender retries enabled.
+RESEND_ALLOW_FALLBACK_SENDER=false
 CONTACT_TO_EMAIL=you@yourdomain.com
 ```
 
@@ -44,8 +48,11 @@ What this setup does:
 - Sends contact submissions through the Resend API.
 - Uses `CONTACT_TO_EMAIL` as the destination inbox.
 - Uses `RESEND_FROM_EMAIL` as the sender identity.
+- Retries with `RESEND_FALLBACK_FROM_EMAIL` when Resend rejects an unverified sender domain.
+- `RESEND_FROM_EMAIL` must use a domain verified in Resend (for example, `DATEL Website <noreply@datel-demo.com>`). Personal Gmail senders are rejected.
+- Until your domain is verified, Resend testing mode can only deliver to your own Resend account email.
 
-For local development, copy `.env.example` to `.env.local` (already scaffolded in this project) and fill in the values.
+For local development, create `.env.local` in the project root and add the same keys with your local values.
 
 ## Customizing
 

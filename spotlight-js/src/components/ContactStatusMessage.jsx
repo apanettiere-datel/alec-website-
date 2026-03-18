@@ -7,6 +7,10 @@ const contactStatusMessages = {
   toolong: 'Message is too long. Please keep it under 5,000 characters.',
   unconfigured: 'Contact form is not fully configured yet. Please try again shortly.',
   captcha: 'Captcha verification failed. Please complete the captcha and try again.',
+  delivery:
+    'We could not deliver your message yet. Please verify the Resend sender domain and try again.',
+  'testing-limit':
+    'Resend is currently in testing mode for this account. Send to your account email, or verify a domain in Resend to deliver to other recipients.',
   error: 'We could not send your message right now. Please try again.',
 }
 

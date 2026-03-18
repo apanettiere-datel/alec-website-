@@ -1,6 +1,4 @@
-import { NextResponse } from 'next/server'
-
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 const MAX_MESSAGE_LENGTH = 5000
 
@@ -26,7 +24,21 @@ function escapeHtml(value) {
 }
 
 function redirectTo(path, request) {
-  return NextResponse.redirect(new URL(path, request.url), 303)
+  let location = path
+
+  try {
+    location = new URL(path, request.url).toString()
+  } catch (error) {
+    console.error('Failed to build redirect URL for contact route:', error)
+    location = path.startsWith('/') ? path : '/'
+  }
+
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: location,
+    },
+  })
 }
 
 function getClientIp(request) {
@@ -64,8 +76,12 @@ async function verifyTurnstile({ token, ip, secretKey }) {
     return false
   }
 
-  const data = await response.json()
-  return data?.success === true
+  try {
+    const data = await response.json()
+    return data?.success === true
+  } catch {
+    return false
+  }
 }
 
 async function sendEmailWithResend({
@@ -93,7 +109,67 @@ async function sendEmailWithResend({
     }),
   })
 
-  return response.ok
+  let responseBody = ''
+
+  try {
+    responseBody = await response.text()
+  } catch {
+    responseBody = ''
+  }
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    body: responseBody,
+  }
+}
+
+function parseResendError(body) {
+  let parsed = null
+
+  try {
+    parsed = JSON.parse(body)
+  } catch {
+    parsed = null
+  }
+
+  const message = normalizeValue(parsed?.message || body).toLowerCase()
+  const name = normalizeValue(parsed?.name).toLowerCase()
+
+  return { message, name }
+}
+
+function isUnverifiedSenderDomainError(result) {
+  if (result.ok) {
+    return false
+  }
+
+  const error = parseResendError(result.body)
+  const haystack = `${error.name} ${error.message}`
+
+  return (
+    haystack.includes('domain') &&
+    (haystack.includes('verify') || haystack.includes('verified'))
+  )
+}
+
+function isTestingRecipientLimitError(result) {
+  if (result.ok) {
+    return false
+  }
+
+  const error = parseResendError(result.body)
+  const haystack = `${error.name} ${error.message}`
+
+  return (
+    haystack.includes('testing emails') &&
+    haystack.includes('own email address')
+  )
+}
+
+function getEnvValue(name) {
+  const value = globalThis.process?.env?.[name]
+  return typeof value === 'string' ? value.trim() : ''
 }
 
 export async function GET(request) {
@@ -102,7 +178,14 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const formData = await request.formData()
+    let formData
+
+    try {
+      formData = await request.formData()
+    } catch (error) {
+      console.error('Contact form payload could not be parsed:', error)
+      return redirectTo('/?contact=invalid#contact', request)
+    }
 
     // Honeypot field for basic bot filtering.
     const companyWebsite = normalizeValue(formData.get('company-website'))
@@ -127,10 +210,14 @@ export async function POST(request) {
       return redirectTo('/?contact=toolong#contact', request)
     }
 
-    const resendApiKey = process.env.RESEND_API_KEY
-    const resendFromEmail = process.env.RESEND_FROM_EMAIL
-    const contactToEmail = process.env.CONTACT_TO_EMAIL
-    const turnstileSecretKey = process.env.TURNSTILE_SECRET_KEY
+    const resendApiKey = getEnvValue('RESEND_API_KEY')
+    const resendFromEmail = getEnvValue('RESEND_FROM_EMAIL')
+    const resendFallbackFromEmail =
+      getEnvValue('RESEND_FALLBACK_FROM_EMAIL') ||
+      'Alec Roedig <onboarding@resend.dev>'
+    const resendAllowFallbackSender = getEnvValue('RESEND_ALLOW_FALLBACK_SENDER')
+    const contactToEmail = getEnvValue('CONTACT_TO_EMAIL')
+    const turnstileSecretKey = getEnvValue('TURNSTILE_SECRET_KEY')
 
     if (
       !resendApiKey ||
@@ -180,7 +267,7 @@ export async function POST(request) {
       <pre style="white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">${escapeHtml(message)}</pre>
     `
 
-    const emailSent = await sendEmailWithResend({
+    const emailResult = await sendEmailWithResend({
       apiKey: resendApiKey,
       from: resendFromEmail,
       to: contactToEmail,
@@ -190,9 +277,53 @@ export async function POST(request) {
       html,
     })
 
-    if (!emailSent) {
-      console.error('Resend failed to deliver the contact email.')
-      return redirectTo('/?contact=error#contact', request)
+    if (!emailResult.ok) {
+      if (isTestingRecipientLimitError(emailResult)) {
+        return redirectTo('/?contact=testing-limit#contact', request)
+      }
+
+      const fallbackSenderEnabled =
+        resendAllowFallbackSender === 'true' ||
+        (globalThis.process?.env?.NODE_ENV ?? '') !== 'production'
+      const shouldTryFallbackSender =
+        fallbackSenderEnabled &&
+        resendFallbackFromEmail &&
+        resendFallbackFromEmail !== resendFromEmail &&
+        isUnverifiedSenderDomainError(emailResult)
+
+      if (shouldTryFallbackSender) {
+        const fallbackResult = await sendEmailWithResend({
+          apiKey: resendApiKey,
+          from: resendFallbackFromEmail,
+          to: contactToEmail,
+          replyTo: email,
+          subject: `New Contact Request from ${name}`,
+          text,
+          html,
+        })
+
+        if (fallbackResult.ok) {
+          console.warn(
+            'Primary Resend sender domain is unverified. Delivered with fallback sender.',
+          )
+          return redirectTo('/thank-you', request)
+        }
+
+        console.error('Resend fallback sender also failed.', {
+          status: fallbackResult.status,
+          body: fallbackResult.body.slice(0, 500),
+        })
+
+        if (isTestingRecipientLimitError(fallbackResult)) {
+          return redirectTo('/?contact=testing-limit#contact', request)
+        }
+      }
+
+      console.error('Resend failed to deliver the contact email.', {
+        status: emailResult.status,
+        body: emailResult.body.slice(0, 500),
+      })
+      return redirectTo('/?contact=delivery#contact', request)
     }
 
     return redirectTo('/thank-you', request)
