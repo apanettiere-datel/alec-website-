@@ -35,6 +35,8 @@ NEXT_PUBLIC_TURNSTILE_SITE_KEY=replace-with-turnstile-site-key
 TURNSTILE_SECRET_KEY=replace-with-turnstile-secret-key
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxx
 RESEND_FROM_EMAIL=Alec Roedig <contact@yourdomain.com>
+# Optional alias used by this project in some environments
+CONTACT_FROM_EMAIL=Alec Roedig <contact@yourdomain.com>
 # Optional fallback sender (recommended for local/testing while domain is pending verification)
 RESEND_FALLBACK_FROM_EMAIL=Alec Roedig <onboarding@resend.dev>
 # In production, set to true only if you explicitly want fallback sender retries enabled.
@@ -47,7 +49,7 @@ What this setup does:
 - Validates Cloudflare Turnstile token server-side.
 - Sends contact submissions through the Resend API.
 - Uses `CONTACT_TO_EMAIL` as the destination inbox.
-- Uses `RESEND_FROM_EMAIL` as the sender identity.
+- Uses `RESEND_FROM_EMAIL` (or `CONTACT_FROM_EMAIL`) as the sender identity.
 - Retries with `RESEND_FALLBACK_FROM_EMAIL` when Resend rejects an unverified sender domain.
 - `RESEND_FROM_EMAIL` must use a domain verified in Resend (for example, `DATEL Website <noreply@datel-demo.com>`). Personal Gmail senders are rejected.
 - Until your domain is verified, Resend testing mode can only deliver to your own Resend account email.

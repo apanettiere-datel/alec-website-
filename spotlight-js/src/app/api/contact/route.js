@@ -211,7 +211,8 @@ export async function POST(request) {
     }
 
     const resendApiKey = getEnvValue('RESEND_API_KEY')
-    const resendFromEmail = getEnvValue('RESEND_FROM_EMAIL')
+    const resendFromEmail =
+      getEnvValue('CONTACT_FROM_EMAIL') || getEnvValue('RESEND_FROM_EMAIL')
     const resendFallbackFromEmail =
       getEnvValue('RESEND_FALLBACK_FROM_EMAIL') ||
       'Alec Roedig <onboarding@resend.dev>'
