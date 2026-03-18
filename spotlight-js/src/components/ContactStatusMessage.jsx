@@ -17,7 +17,20 @@ const contactStatusMessages = {
 export function ContactStatusMessage() {
   const searchParams = useSearchParams()
   const status = searchParams.get('contact')
-  const message = status ? contactStatusMessages[status] : null
+  const missingVars = searchParams.get('missing')
+  let message = status ? contactStatusMessages[status] : null
+
+  if (status === 'unconfigured' && missingVars) {
+    const formattedMissing = missingVars
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .join(', ')
+
+    if (formattedMissing) {
+      message = `${contactStatusMessages.unconfigured} Missing: ${formattedMissing}.`
+    }
+  }
 
   if (!message) {
     return null

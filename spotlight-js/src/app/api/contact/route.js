@@ -220,14 +220,29 @@ export async function POST(request) {
     const contactToEmail = getEnvValue('CONTACT_TO_EMAIL')
     const turnstileSecretKey = getEnvValue('TURNSTILE_SECRET_KEY')
 
-    if (
-      !resendApiKey ||
-      !resendFromEmail ||
-      !contactToEmail ||
-      !turnstileSecretKey
-    ) {
-      console.error('Contact form environment variables are not fully configured.')
-      return redirectTo('/?contact=unconfigured#contact', request)
+    const missingEnvVars = []
+
+    if (!resendApiKey) {
+      missingEnvVars.push('RESEND_API_KEY')
+    }
+    if (!resendFromEmail) {
+      missingEnvVars.push('RESEND_FROM_EMAIL/CONTACT_FROM_EMAIL')
+    }
+    if (!contactToEmail) {
+      missingEnvVars.push('CONTACT_TO_EMAIL')
+    }
+    if (!turnstileSecretKey) {
+      missingEnvVars.push('TURNSTILE_SECRET_KEY')
+    }
+
+    if (missingEnvVars.length > 0) {
+      console.error('Contact form environment variables are not fully configured.', {
+        missing: missingEnvVars,
+      })
+      return redirectTo(
+        `/?contact=unconfigured&missing=${encodeURIComponent(missingEnvVars.join(','))}#contact`,
+        request,
+      )
     }
 
     if (!turnstileToken) {
