@@ -167,9 +167,21 @@ function isTestingRecipientLimitError(result) {
   )
 }
 
-function getEnvValue(name) {
-  const value = globalThis.process?.env?.[name]
-  return typeof value === 'string' ? value.trim() : ''
+async function getRuntimeEnvValue(name) {
+  const processValue = globalThis.process?.env?.[name]
+  if (typeof processValue === 'string' && processValue.trim()) {
+    return processValue.trim()
+  }
+
+  try {
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare')
+    const cloudflareContext = await getCloudflareContext({ async: true })
+    const cloudflareValue = cloudflareContext?.env?.[name]
+
+    return typeof cloudflareValue === 'string' ? cloudflareValue.trim() : ''
+  } catch {
+    return ''
+  }
 }
 
 export async function GET(request) {
@@ -210,15 +222,18 @@ export async function POST(request) {
       return redirectTo('/?contact=toolong#contact', request)
     }
 
-    const resendApiKey = getEnvValue('RESEND_API_KEY')
+    const resendApiKey = await getRuntimeEnvValue('RESEND_API_KEY')
     const resendFromEmail =
-      getEnvValue('CONTACT_FROM_EMAIL') || getEnvValue('RESEND_FROM_EMAIL')
+      (await getRuntimeEnvValue('CONTACT_FROM_EMAIL')) ||
+      (await getRuntimeEnvValue('RESEND_FROM_EMAIL'))
     const resendFallbackFromEmail =
-      getEnvValue('RESEND_FALLBACK_FROM_EMAIL') ||
+      (await getRuntimeEnvValue('RESEND_FALLBACK_FROM_EMAIL')) ||
       'Alec Roedig <onboarding@resend.dev>'
-    const resendAllowFallbackSender = getEnvValue('RESEND_ALLOW_FALLBACK_SENDER')
-    const contactToEmail = getEnvValue('CONTACT_TO_EMAIL')
-    const turnstileSecretKey = getEnvValue('TURNSTILE_SECRET_KEY')
+    const resendAllowFallbackSender = await getRuntimeEnvValue(
+      'RESEND_ALLOW_FALLBACK_SENDER',
+    )
+    const contactToEmail = await getRuntimeEnvValue('CONTACT_TO_EMAIL')
+    const turnstileSecretKey = await getRuntimeEnvValue('TURNSTILE_SECRET_KEY')
 
     const missingEnvVars = []
 

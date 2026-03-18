@@ -44,6 +44,8 @@ RESEND_ALLOW_FALLBACK_SENDER=false
 CONTACT_TO_EMAIL=you@yourdomain.com
 ```
 
+Note: `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is a public client key and should be set as a normal Variable (not Secret). The other keys should remain Secrets.
+
 What this setup does:
 
 - Validates Cloudflare Turnstile token server-side.
