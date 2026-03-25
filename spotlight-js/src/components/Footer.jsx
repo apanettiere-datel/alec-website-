@@ -24,7 +24,6 @@ export function Footer() {
                 <NavLink href="/">Home</NavLink>
                 <NavLink href="/#profile">Profile</NavLink>
                 <NavLink href="/#services">Services</NavLink>
-                <NavLink href="/#financial-planning">Financial Planning</NavLink>
                 <NavLink href="/#contact">Contact</NavLink>
               </div>
               <p className="text-sm text-zinc-400 dark:text-zinc-500">

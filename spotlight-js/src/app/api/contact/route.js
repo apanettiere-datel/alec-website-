@@ -168,6 +168,15 @@ function isTestingRecipientLimitError(result) {
 }
 
 async function getRuntimeEnvValue(name) {
+  const cloudflareContext = globalThis[Symbol.for('__cloudflare-context__')]
+  const cloudflareValueFromGlobal = cloudflareContext?.env?.[name]
+  if (
+    typeof cloudflareValueFromGlobal === 'string' &&
+    cloudflareValueFromGlobal.trim()
+  ) {
+    return cloudflareValueFromGlobal.trim()
+  }
+
   const processValue = globalThis.process?.env?.[name]
   if (typeof processValue === 'string' && processValue.trim()) {
     return processValue.trim()

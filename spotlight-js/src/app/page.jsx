@@ -8,32 +8,15 @@ import { ContactStatusMessage } from '@/components/ContactStatusMessage'
 import alecImage from '@/images/alec.jpg'
 
 const servicesOffered = [
-  'Comprehensive financial planning',
   'Insurance and risk management strategy',
   'Retirement planning solutions',
-  'Income and cashflow guidance',
-  'Tax-aware planning support',
   'Legacy and estate planning coordination',
 ]
 
 const atAGlance = [
   'Personalized guidance for insurance and retirement planning',
   'Backed by AmeriLife\'s national carrier and advisor network',
-  'Straightforward planning focused on long-term financial security',
-]
-
-const financialPlanningApproach = [
-  'Discovery and goal mapping aligned to your timeline and household priorities',
-  'Cashflow planning that balances current obligations with long-term accumulation',
-  'Protection-first framework for income, liabilities, and family continuity',
-  'Investment and retirement strategy reviews with disciplined annual checkpoints',
-]
-
-const clientFocusAreas = [
-  'Retirement income durability and withdrawal planning',
-  'Policy and coverage alignment with changing life stages',
-  'Tax-efficient planning coordination across accounts and strategies',
-  'Legacy, beneficiary, and estate-planning readiness',
+  'Long-term financial security',
 ]
 
 const ameriLifeStats = [
@@ -84,27 +67,18 @@ export default function Home() {
           <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
             <div className="min-w-0 p-5 sm:p-10">
               <p className="inline-flex rounded-full bg-[#3fa590]/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#3fa590]">
-                AmeriLife Financial Services
+                AmeriLife
               </p>
               <h1 className="mt-4 text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl dark:text-zinc-100">
                 Alec Roedig
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-300">
-                Personalized insurance and retirement planning support for
-                individuals, families, and pre-retirees. The focus is practical,
-                clear strategy that protects today and builds confidence for the
-                future.
+                Strategies for individuals, families, and pre-retirees. The focus
+                is on a practical, clear strategy that protects today and builds
+                confidence for tomorrow.
               </p>
 
-              <div className="mt-7 grid gap-3 sm:grid-cols-3">
-                <div className="min-w-0 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800/60 sm:p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
-                    Category
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                    Financial Services
-                  </p>
-                </div>
+              <div className="mt-7 grid gap-3 sm:grid-cols-2">
                 <div className="min-w-0 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800/60 sm:p-4">
                   <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     Partner
@@ -118,7 +92,7 @@ export default function Home() {
                     Focus
                   </p>
                   <p className="mt-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                    Retirement Strategy
+                    Retirement
                   </p>
                 </div>
               </div>
@@ -167,12 +141,6 @@ export default function Home() {
                 Services
               </Link>
               <Link
-                href="#financial-planning"
-                className="rounded-full border border-zinc-300 px-3 py-1.5 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590] sm:px-4 sm:py-2"
-              >
-                Financial Planning
-              </Link>
-              <Link
                 href="#amerilife"
                 className="rounded-full border border-zinc-300 px-3 py-1.5 font-medium text-zinc-700 transition hover:border-[#3fa590] hover:text-[#3fa590] dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-[#3fa590] dark:hover:text-[#3fa590] sm:px-4 sm:py-2"
               >
@@ -217,35 +185,6 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-              </Section>
-
-              <Section id="financial-planning" title="Financial Planning Approach">
-                <p>
-                  Planning starts with clarity: where you are now, what you want
-                  to achieve, and what risks could disrupt progress. From there,
-                  each recommendation is designed to be actionable and measurable.
-                </p>
-                <ul className="space-y-3">
-                  {financialPlanningApproach.map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span
-                        className="mt-2 h-2 w-2 rounded-full bg-[#3fa590]"
-                        aria-hidden="true"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {clientFocusAreas.map((area) => (
-                    <div
-                      key={area}
-                      className="min-w-0 break-words rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm font-medium text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-200 sm:px-4 sm:py-3"
-                    >
-                      {area}
-                    </div>
-                  ))}
-                </div>
               </Section>
 
               <Section id="amerilife" title="About AmeriLife">
